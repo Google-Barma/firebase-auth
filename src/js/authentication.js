@@ -102,8 +102,6 @@ function createNewUserWithEmailAndPassword() {
       }
       console.log(error);
     });
-
-  clearEmailAndPassInput();
 }
 
 function initApp() {
