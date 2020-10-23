@@ -6,12 +6,35 @@
     <title>Hangry Snake</title>
   </head>
   <body>
-    <form action="" class="auth__form" id="auth-form">
-      <input type="email" class="auth__login-input" id="email" required />
-      <input type="text" class="auth__pass-input" id="password" />
+    <input
+      class="mdl-textfield__input"
+      type="text"
+      id="email"
+      name="email"
+      required
+      placeholder="Email"
+    />
 
-      <button class="auth__sign-in-btn js-sign-in-btn">Sign In</button>
-      <button class="auth__sign-up-btn js-sign-up-btn">Sign Up</button>
-    </form>
+    <input
+      class="mdl-textfield__input"
+      type="password"
+      id="password"
+      name="password"
+      placeholder="Password"
+    />
+
+    <button disabled class="button sign-in" id="sign-in" name="signin">
+      Sign In
+    </button>
+
+    <button class="sign-up" id="sign-up" name="signup">Sign Up</button>
+
+    <div class="user-details-container">
+      <p class="user__status">
+        Status: <span id="sign-in-status">Unknown</span>
+      </p>
+
+      <p class="user__name">Login as: <span id="account-details">null</span></p>
+    </div>
   </body>
 </html>

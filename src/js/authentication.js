@@ -24,12 +24,56 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-function createNewUserWithEmailAndPassword() {
-  let email = refs.email.value;
-  let password = refs.password.value;
+function clearEmailAndPassInput() {
+  refs.email.value = '';
+  refs.password.value = '';
+}
 
-  console.log(email);
-  console.log(password);
+function toggleSignIn() {
+  if (firebase.auth().currentUser) {
+    // [START signout]
+    firebase.auth().signOut();
+    // [END signout]
+  } else {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    if (email.length < 4) {
+      alert('Please enter an email address.');
+      return;
+    }
+    if (password.length < 4) {
+      alert('Please enter a password.');
+      return;
+    }
+    // Sign in with email and pass.
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .catch(function (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        if (errorCode === 'auth/wrong-password') {
+          alert('Wrong password.');
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+        document.getElementById('sign-in').disabled = false;
+      });
+  }
+  document.getElementById('sign-in').disabled = true;
+}
+
+function handleSignUp() {
+  createNewUserWithEmailAndPassword();
+}
+
+function createNewUserWithEmailAndPassword() {
+  const email = refs.email.value;
+  const password = refs.password.value;
 
   if (email.length < 4) {
     alert('Please enter an email address.');
@@ -39,7 +83,6 @@ function createNewUserWithEmailAndPassword() {
     alert('Please enter a password.');
     return;
   }
-  // Create user with email and pass.
 
   firebase
     .auth()
@@ -57,16 +100,66 @@ function createNewUserWithEmailAndPassword() {
       console.log(error);
     });
 
-  refs.email.value = '';
-  refs.password.value = '';
+  clearEmailAndPassInput();
 }
 
-refs.authForm.addEventListener('click', event => {
-  event.preventDefault();
+function sendPasswordReset() {
+  const email = document.getElementById('email').value;
+  // [START sendpasswordemail]
+  firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(function () {
+      // Password Reset Email Sent!
 
-  const signUp = document.querySelector('.js-sign-up-btn');
+      alert('Password Reset Email Sent!');
+    })
+    .catch(function (error) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
 
-  if (event.target === signUp) {
-    createNewUserWithEmailAndPassword();
-  }
-});
+      if (errorCode == 'auth/invalid-email') {
+        alert(errorMessage);
+      } else if (errorCode == 'auth/user-not-found') {
+        alert(errorMessage);
+      }
+      console.log(error);
+    });
+}
+
+function initApp() {
+  // Listening for auth state changes.
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      // User is signed in.
+      const displayName = user.displayName;
+      const email = user.email;
+      const emailVerified = user.emailVerified;
+      const photoURL = user.photoURL;
+      const isAnonymous = user.isAnonymous;
+      const uid = user.uid;
+      const providerData = user.providerData;
+
+      document.getElementById('sign-in-status').textContent = 'Signed in';
+      document.getElementById('sign-in').textContent = 'Sign out';
+      document.getElementById('account-details').textContent = email;
+    } else {
+      // User is signed out.
+
+      document.getElementById('sign-in-status').textContent = 'Signed out';
+      document.getElementById('sign-in').textContent = 'Sign in';
+      document.getElementById('account-details').textContent = '';
+    }
+
+    document.getElementById('sign-in').disabled = false;
+  });
+
+  refs.signInBtn.addEventListener('click', toggleSignIn, false);
+  refs.signUpBtn.addEventListener('click', handleSignUp, false);
+}
+
+window.onload = function () {
+  initApp();
+};
