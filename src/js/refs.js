@@ -5,5 +5,7 @@ export default {
   signInBtn: document.getElementById('sign-in'),
   signUpBtn: document.getElementById('sign-up'),
 
-  signInStatus: document.querySelector('.sign-in-status'),
+  signInStatus: document.getElementById('sign-in-status'),
+  signInUserName: document.querySelector('.js-user__name'),
+  accountDetails: document.getElementById('account-details'),
 };

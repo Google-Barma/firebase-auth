@@ -35,8 +35,8 @@ function toggleSignIn() {
     firebase.auth().signOut();
     // [END signout]
   } else {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+    const email = refs.email.value;
+    const password = refs.password.value;
     if (email.length < 4) {
       alert('Please enter an email address.');
       return;
@@ -61,10 +61,13 @@ function toggleSignIn() {
           alert(errorMessage);
         }
         console.log(error);
-        document.getElementById('sign-in').disabled = false;
+
+        refs.signInBtn.disabled = false;
       });
   }
-  document.getElementById('sign-in').disabled = true;
+  refs.signInBtn.disabled = true;
+
+  clearEmailAndPassInput();
 }
 
 function handleSignUp() {
@@ -103,57 +106,32 @@ function createNewUserWithEmailAndPassword() {
   clearEmailAndPassInput();
 }
 
-function sendPasswordReset() {
-  const email = document.getElementById('email').value;
-  // [START sendpasswordemail]
-  firebase
-    .auth()
-    .sendPasswordResetEmail(email)
-    .then(function () {
-      // Password Reset Email Sent!
-
-      alert('Password Reset Email Sent!');
-    })
-    .catch(function (error) {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-
-      if (errorCode == 'auth/invalid-email') {
-        alert(errorMessage);
-      } else if (errorCode == 'auth/user-not-found') {
-        alert(errorMessage);
-      }
-      console.log(error);
-    });
-}
-
 function initApp() {
   // Listening for auth state changes.
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       // User is signed in.
-      const displayName = user.displayName;
       const email = user.email;
-      const emailVerified = user.emailVerified;
-      const photoURL = user.photoURL;
-      const isAnonymous = user.isAnonymous;
-      const uid = user.uid;
-      const providerData = user.providerData;
+      // const displayName = user.displayName;
+      // const emailVerified = user.emailVerified;
+      // const photoURL = user.photoURL;
+      // const isAnonymous = user.isAnonymous;
+      // const uid = user.uid;
+      // const providerData = user.providerData;
 
-      document.getElementById('sign-in-status').textContent = 'Signed in';
-      document.getElementById('sign-in').textContent = 'Sign out';
-      document.getElementById('account-details').textContent = email;
+      refs.signInStatus.textContent = 'Signed in';
+      refs.signInBtn.textContent = 'Sign out';
+      refs.accountDetails.textContent = email;
     } else {
       // User is signed out.
 
-      document.getElementById('sign-in-status').textContent = 'Signed out';
-      document.getElementById('sign-in').textContent = 'Sign in';
-      document.getElementById('account-details').textContent = '';
+      refs.signInStatus.textContent = 'Signed out';
+      refs.signInBtn.textContent = 'Sign in';
+      refs.accountDetails.textContent = 'noname';
     }
 
-    document.getElementById('sign-in').disabled = false;
+    refs.signInBtn.disabled = false;
   });
 
   refs.signInBtn.addEventListener('click', toggleSignIn, false);

@@ -1,0 +1,62 @@
+html {
+  box-sizing: border-box;
+}
+
+main {
+  height: 100vh;
+  // background-color: #8bc6ec;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: linear-gradient(
+    135deg,
+    rgba(139, 198, 236, 0.5) 30%,
+    rgba(149, 153, 226, 0.5) 100%
+  );
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  border: 0;
+  padding: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  margin: -1px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
