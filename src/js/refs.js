@@ -1,4 +1,5 @@
 export default {
+  authForm: document.getElementById('auth-form'),
   email: document.getElementById('email'),
   password: document.getElementById('password'),
 

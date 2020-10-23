@@ -1,3 +1,3 @@
 import './styles.css';
 
-import './js/authontication';
+import './js/authentication';

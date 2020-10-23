@@ -24,9 +24,13 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-function handleSignUp() {
-  const email = refs.email.value;
-  const password = refs.password.value;
+function createNewUserWithEmailAndPassword() {
+  let email = refs.email.value;
+  let password = refs.password.value;
+
+  console.log(email);
+  console.log(password);
+
   if (email.length < 4) {
     alert('Please enter an email address.');
     return;
@@ -36,7 +40,7 @@ function handleSignUp() {
     return;
   }
   // Create user with email and pass.
-  // [START createwithemail]
+
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
@@ -45,16 +49,24 @@ function handleSignUp() {
       const errorCode = error.code;
       const errorMessage = error.message;
 
-      // [START_EXCLUDE]
       if (errorCode == 'auth/weak-password') {
         alert('The password is too weak.');
       } else {
         alert(errorMessage);
       }
       console.log(error);
-      // [END_EXCLUDE]
     });
-  // [END createwithemail]
+
+  refs.email.value = '';
+  refs.password.value = '';
 }
 
-refs.signUpBtn.addEventListener('click', event => handleSignUp);
+refs.authForm.addEventListener('click', event => {
+  event.preventDefault();
+
+  const signUp = document.querySelector('.js-sign-up-btn');
+
+  if (event.target === signUp) {
+    createNewUserWithEmailAndPassword();
+  }
+});
